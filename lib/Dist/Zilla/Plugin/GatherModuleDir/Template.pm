@@ -8,7 +8,13 @@ extends qw(Dist::Zilla::Plugin::GatherDir::Template);
 
 use String::Formatter method_stringf => {
     -as   => '_format_string',
-    codes => { N => sub { $_[0]->zilla->name }, },
+    codes => {
+        N => sub {
+            my $seperator = $_[1] || '/';
+            ( my $name = $_[0]->zilla->name ) =~ s[-][$seperator]g;
+            return $name;
+        },
+    },
 };
 
 around prefix => sub {
